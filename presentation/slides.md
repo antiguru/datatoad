@@ -28,32 +28,41 @@ Moritz Hoffmann (Materialize Inc.)
 Foundations of Data Management
 July 2026
 
+Work by Frank McSherry; presented by Moritz Hoffmann.
+
+<!--
 * worst-case optimal datalog is more important than the audience might see.
-* End the end the whole computation, full, semi-naive, comes with worst-case optimal bounds. You woudn't get them from joins alone.
+* In the end, the whole computation, full, semi-naive, comes with worst-case optimal bounds. You wouldn't get them from joins alone.
 * WCOJ alone doesn't compose, don't do 1x1M repeatedly
 * Reinterpretation of existing work (Ammar et al), taking streaming computation for datalog
+-->
 ---
 
 ## Context: [`datatoad`](https://github.com/frankmcsherry/datatoad) framework
 
-A { columnar, wco, ~directional, .. } Datalog (Z?)
+A { columnar, wco, ~directional, .. } DatalogZ (with integers)
 
 - Columnar data layout and computation.
 - Worst-case optimal incremental joins. ([Ammar et al., VLDB 2018](https://www.vldb.org/pvldb/vol11/p691-ammar.pdf))
 - { bi / many / omni } - directional predicates.
 - Interactive, Distributed, Low memory, ..
 
+<!--
 * concrete implementation
 * properties 1-3 are consequential, 4 is important for system implementors, consider cutting 3, but it is interesting.
   * All the logical predicates also play nice with the framework.
+-->
 ---
 
 <style scoped>section { padding: 28px; }</style>
 
-<iframe src="http://localhost:8000/" width="1180" height="640"
+<iframe src="http://www.frankmcsherry.org/datatoad/demo/" width="1180" height="640"
         style="border:1px solid #d0d7de; border-radius:8px; display:block; margin:0 auto;"></iframe>
 
+<!--
 * Wasm datatoad
+* Public build; runs client-side, no server needed. Fallback if the venue network is flaky: serve the local wasm build and point the iframe at http://localhost:8000/ instead.
+-->
 
 ---
 
@@ -71,9 +80,11 @@ A { columnar, wco, ~directional, .. } Datalog (Z?)
 
 4.  Comments, provocations, and future directions.
 
-* Can delete (1.) but: other algortihms don't talk about data structures, because the worst-case optimality doesn't come from the data structures.
+<!--
+* Can delete (1.) but: other algorithms don't talk about data structures, because the worst-case optimality doesn't come from the data structures.
 * (2) restates Ammar, delta joins.
 * (3, 4) is the extensibility, potential for cutting.
+-->
 
 ---
 
@@ -90,7 +101,9 @@ Develop assignments satisfying the body projected on increasing subsets of terms
 2.  Repeatedly add a new term, update satisfying assignments by that term.
 3.  Project down to head terms (and as you go, if you like).
 
+<!--
 * Lookup GenericJoin NPRR, framework. We're doing breadth-first instead of depth-first.
+-->
 
 ---
 
@@ -110,7 +123,9 @@ To extend an assignment `A` by a term `Ti`, each involved atom does three things
 1. Each atom that mentions `Ti` **validates**
     1. each extended assignment `[a;Ti=ti]`.
 
+<!--
 * Up until here it's not novel, just an explanation of WCOJ.
+-->
 
 ---
 
@@ -131,8 +146,10 @@ Could restart from scratch, but can also determine `dHead`:
 
 A sequence of *seeded* WCO joins, against maintained indexes. Constrained term order.
 
+<!--
 * what goes wrong when you just do each of these as WCOJ? Each is a join of a small term with a big term, and WCOJ gives permission to do all of it. We need to depend more strongly on the `d` term.
-  * If we have multi-set semantics, we need to be careful not to mention `d`s repeatedly, but also mentioned in Ammar et. al.
+  * If we have multi-set semantics, we need to be careful not to mention `d`s repeatedly, but also mentioned in Ammar et al.
+-->
 
 ---
 
@@ -206,7 +223,7 @@ pub trait PlanAtom<T> {
     /// Terms that can be made concrete from other concrete terms.
     ///
     /// The output are cardinality bounds, like Mercury's determinism levels.
-    fn modes(&self, from: &Set<T>, onto: &Self<T>) -> (usize, Option<usize>);
+    fn modes(&self, from: &Set<T>, onto: &Self) -> (usize, Option<usize>);
 
 }
 ```
@@ -262,7 +279,7 @@ tri1(a, b, c) :- arc(a, b), arc(b, c), arc(c, a).
 tri2(a, b, c) :- arc(a, b), arc(b, c), arc(c, a), :plus(a, b, c).
 ```
 
-The secord query can have far fewer results, but do we notice in time?
+The second query can have far fewer results, but do we notice in time?
 
 |  N=1000       | `tri1` | `tri2` |
 |---------------|-------:|-------:|
