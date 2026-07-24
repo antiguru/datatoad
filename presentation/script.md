@@ -157,7 +157,10 @@ goodwill and it's true.
 | Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 2:30 |
 | Logic atoms + `:plus` payoff | 14–16 | 2:30 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:30 |
-| **Buffer / demo overrun** | — | 0:30 |
+| Closing | 21 | 0:45 |
+
+Scripted content runs ~15:15 as written — i.e. slightly *over* with zero slack,
+so the cut list below is not optional insurance, it's how you land on time.
 
 **If you're running long, cut in this order:** (1) the sensors "more-WCO
 example" (slide 17) — it's a second logic-atom example, fully redundant with
@@ -439,10 +442,32 @@ odd times. So the theory and the engine agree.
 
 [transition into Closing:] Which brings me to what I think this all *means*..."
 
-[advance → Closing]
+[advance]
+
+### Slide 21 — Closing  ·  ~0:45
+
+"So — two takeaways.
+
+First: **worst-case optimal *Datalog* is a genuinely different thing from a
+worst-case optimal *join*.** The bound is over the whole semi-naive computation,
+and you get it by seeing the fixpoint as insertion-only — not from the joins on
+their own.
+
+Second, and maybe the more useful one: **the columnar orientation turns out to
+be a uniform interface.** Stored relations, antijoins, sums and differences,
+directional predicates, external data — [gesture down the list] every one of
+these implements the same two traits and plugs into the same count protocol.
+**Each adds capability without any new engine machinery.**
+
+So the thing I'd leave you with: columnar WCO Datalog ends up being a
+*substrate*, not just a faster engine. The speed is nice — the compositionality
+is the part I think is worth arguing about. And I'd love to."
+
+[advance → Hackathon / provocations]
 
 ---
 
-*End of scripted section. "Closing," "Hackathon," "Conversation starters," and
-the DDIR language slide are yours to deliver freely — they're provocations, not
-script.*
+*End of scripted section. "Hackathon," "Conversation starters," and the DDIR
+language slide are yours to deliver freely — they're provocations, not script.
+The "substrate, not just a faster engine" line is a clean stopping point if you
+want to take questions before those.*
