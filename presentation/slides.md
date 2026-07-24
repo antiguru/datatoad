@@ -18,10 +18,20 @@ section:has(> h2:first-child) {
 
 # Worst-Case Optimal Datalog (++)
 
-Frank McSherry
-Minnowbrook Analytic Reasoning Seminar
-June 2026
+<!--
+    Frank McSherry
+    Minnowbrook Analytic Reasoning Seminar
+    June 2026
+-->
 
+Moritz Hoffmann (Materialize Inc.)
+Foundations of Data Management
+July 2026
+
+* worst-case optimal datalog is more important than the audience might see.
+* End the end the whole computation, full, semi-naive, comes with worst-case optimal bounds. You woudn't get them from joins alone.
+* WCOJ alone doesn't compose, don't do 1x1M repeatedly
+* Reinterpretation of existing work (Ammar et al), taking streaming computation for datalog
 ---
 
 ## Context: [`datatoad`](https://github.com/frankmcsherry/datatoad) framework
@@ -33,15 +43,17 @@ A { columnar, wco, ~directional, .. } Datalog (Z?)
 - { bi / many / omni } - directional predicates.
 - Interactive, Distributed, Low memory, ..
 
-Came out of last year's version of this seminar.
-
-
+* concrete implementation
+* properties 1-3 are consequential, 4 is important for system implementors, consider cutting 3, but it is interesting.
+  * All the logical predicates also play nice with the framework.
 ---
 
 <style scoped>section { padding: 28px; }</style>
 
 <iframe src="http://localhost:8000/" width="1180" height="640"
         style="border:1px solid #d0d7de; border-radius:8px; display:block; margin:0 auto;"></iframe>
+
+* Wasm datatoad
 
 ---
 
@@ -59,6 +71,10 @@ Came out of last year's version of this seminar.
 
 4.  Comments, provocations, and future directions.
 
+* Can delete (1.) but: other algortihms don't talk about data structures, because the worst-case optimality doesn't come from the data structures.
+* (2) restates Ammar, delta joins.
+* (3, 4) is the extensibility, potential for cutting.
+
 ---
 
 ## Columnar WCO Joins (1/2)
@@ -73,6 +89,8 @@ Develop assignments satisfying the body projected on increasing subsets of terms
 1.  Terms start `{ }`, trivial assignment satisfies the body (if all non-empty).
 2.  Repeatedly add a new term, update satisfying assignments by that term.
 3.  Project down to head terms (and as you go, if you like).
+
+* Lookup GenericJoin NPRR, framework. We're doing breadth-first instead of depth-first.
 
 ---
 
@@ -92,6 +110,8 @@ To extend an assignment `A` by a term `Ti`, each involved atom does three things
 1. Each atom that mentions `Ti` **validates**
     1. each extended assignment `[a;Ti=ti]`.
 
+* Up until here it's not novel, just an explanation of WCOJ.
+
 ---
 
 ## Streaming WCO Joins (1/2)
@@ -110,6 +130,9 @@ Could restart from scratch, but can also determine `dHead`:
           + dBodyK, (Body0 + dBody0), (Body1 + dBody1), ..
 
 A sequence of *seeded* WCO joins, against maintained indexes. Constrained term order.
+
+* what goes wrong when you just do each of these as WCOJ? Each is a join of a small term with a big term, and WCOJ gives permission to do all of it. We need to depend more strongly on the `d` term.
+  * If we have multi-set semantics, we need to be careful not to mention `d`s repeatedly, but also mentioned in Ammar et. al.
 
 ---
 
