@@ -243,9 +243,9 @@ Here's the example I'd point you at. That graph is built by three rules — note
 triangle query. **The graph is constructed so that *no* pair-at-a-time join
 order avoids about a trillion intermediate results.**
 
-Natively: a hundred milliseconds to load three million facts, about a second to
-enumerate every triangle. The same query in PostgreSQL was still running when we
-gave up on it.
+Natively: about a tenth of a second to load three million facts, and about a
+second to enumerate every triangle. The same query in PostgreSQL was still
+running when we gave up on it.
 
 The URL's there — it runs in your laptop's browser, so please do try it."
 

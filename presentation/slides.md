@@ -57,6 +57,13 @@ A { columnar, wco, ~directional, .. } DatalogZ (with integers)
 -->
 ---
 
+<style scoped>
+section { padding: 40px 56px; }
+section h2 { margin: 0 0 0.4em; }
+section pre { font-size: 0.8em; line-height: 1.3; margin: 0.5em 0; }
+section p { margin: 0.45em 0; }
+</style>
+
 ## `datatoad`, in the browser
 
 A graph where *every* pair-at-a-time join plan blows up:
@@ -69,13 +76,10 @@ arc(x, y) :- :range(1, x, 1000001), :plus(x, 1, y).
 tri(a, b, c) :- arc(a,b), arc(b,c), arc(c,a).
 ```
 
-| 3M facts, natively | |
-|---|---|
-| load the data | ~100ms |
-| enumerate all triangles | ~1s |
-| *same query, PostgreSQL* | *still running* |
+3M facts, natively: **load ~120ms**, **all triangles ~1s**.
+Same query in PostgreSQL: *still running.*
 
-### ▶ Try it: `frankmcsherry.org/datatoad/demo`
+**▶ Try it:** `frankmcsherry.org/datatoad/demo`
 
 <!--
 * Wasm datatoad: the whole engine compiled to WebAssembly, client-side.
