@@ -1,0 +1,16 @@
+# Marp configuration.
+#
+# The deck uses raw HTML: an <iframe> for the backup live-demo slide, and
+# <div> spacers on the join slides. Marp escapes raw HTML unless it is
+# enabled, which renders the iframe verbatim and drops the spacers, so this
+# must stay on for the deck to look right.
+#
+# Placed at the repository root so it is found whether you run marp from
+# here or from presentation/ (config lookup searches upward from the cwd).
+#
+# This covers the Marp CLI only. The VS Code extension does NOT read this
+# file -- it uses its own setting. If you preview there and the iframe shows
+# up as text, set "markdown.marp.html": "all" in VS Code settings, and trust
+# the workspace (the setting is ignored in untrusted workspaces).
+# ("markdown.marp.enableHtml" is the deprecated pre-v2 name for it.)
+html: true
