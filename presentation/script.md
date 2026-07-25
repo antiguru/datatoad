@@ -5,9 +5,10 @@
 
 This is *one* delivery of the deck, written to react against — a concrete
 alternative, not the only way. Part 1 is the mental model to have in your head
-before you walk up. Part 2 is a slide-by-slide spoken script, title → the
-benchmark table (i.e. everything before "Closing"). Timings assume ~135 words
-per minute. Total spoken budget is tight; see **Pacing** at the end of Part 1.
+before you walk up. Part 2 is a slide-by-slide spoken script covering all 22
+slides, title → "Thanks". Timings assume ~135 words per minute. **As written it
+runs long for a 15-minute slot — see Pacing at the end of Part 1 for what to
+cut.**
 
 ---
 
@@ -122,8 +123,8 @@ goodwill and it's true.
   so the bound covers the whole computation — plus the interface work on top.
 - **"How does this compare to Free Join / egglog?"** Both interpolate between
   binary and WCO plans; we converged on similar territory from the columnar/
-  streaming side. Honestly: "that's about all I know — happy to compare at the
-  hackathon."
+  streaming side. Honestly: "that's about all I know — I'd genuinely like to
+  compare notes afterwards."
 - **"Soufflé?"** Binary-join-based and heavily optimized; the WCO angle is a
   different axis — we win big on cyclic/skewed queries where binary plans blow
   up.
@@ -131,8 +132,8 @@ goodwill and it's true.
   columns and what makes the interface cheap — the compositionality is
   downstream of the columnar choice.
 - **"Demand/magic sets?"** A tension, not a fit — demand presupposes *avoiding*
-  materialization; WCOJ presupposes it. (This is a coffee argument, slide is
-  after "Closing" — don't open it unless asked.)
+  materialization; WCOJ presupposes it. (No slide for this any more — it's a
+  coffee argument. Don't open it unless asked.)
 - **"Is `:plus` sound over infinite domains?"** It's mode-constrained: it only
   *proposes* when enough terms are bound to make the output finite; otherwise it
   only validates. That's exactly what `modes()` encodes.
@@ -156,28 +157,36 @@ goodwill and it's true.
 
 ## Pacing plan (this is the hard part at 15 min)
 
-~20 content slides before "Closing" is a lot for 15 minutes. Budget:
+22 slides is a lot for 15 minutes. Summing the per-slide timings in Part 2:
 
 | Segment | Slides | Target |
 |---|---|---|
-| Framing + context + demo | 1–4 | 3:00 |
+| Framing + context + demo + outline | 1–4 | 2:45 |
 | The WCO join (breadth-first) | 5–6 | 2:30 |
 | Streaming → the theorem | 7–8 | 2:30 |
-| Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 2:30 |
-| Logic atoms + `:plus` payoff | 14–16 | 2:30 |
-| Relational programming + FFI + benchmarks | 18–20 | 1:30 |
-| Closing | 21 | 0:45 |
+| Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
+| Logic atoms + `:plus` payoff | 14–16 | 2:20 |
+| Sensors example | 17 | 0:45 |
+| Relational programming + FFI + benchmarks | 18–20 | 1:40 |
+| Closing + Thanks | 21–22 | 0:55 |
+| **Total as written** | | **~16:30** |
 
-Scripted content runs ~15:15 as written. Two things now buy you slack: the demo
-slide is **static** (no load, no run, no recovery-from-failure), and everything
-from Hackathon onward is **cut**. Budget ~14:30 spoken, leaving room to breathe
-and to overrun a little on the `:plus` reveal.
+**So the script as written does not fit.** It's ~1:30 over, and that's before
+questions or any stumble. Two cuts get you home:
 
-**If you're running long, cut in this order:** (1) the sensors "more-WCO
-example" (slide 17) — it's a second logic-atom example, fully redundant with
-`:plus`; (2) narrate the live demo instead of typing; (3) collapse the two
-"Columnar WCO Joins" slides into one pass. **Do not cut** the streaming/theorem
-beat or the `:plus` payoff — those are the talk.
+1. **Drop slide 17, the sensors example** (−0:45). It's a second logic-atom
+   example and `:plus` already made the point. This is the easy one.
+2. **Compress the interface run, slides 9–13** (−0:50). Those five slides are
+   quick beats — the two "what implements" builds are ten seconds each, not
+   twenty, and slide 13 can be a single sentence. Take the segment to ~2:15.
+
+That lands ~14:55. If you need more, (3) collapse the two "Columnar WCO Joins"
+slides into one pass. **Do not cut** the streaming/theorem beat or the `:plus`
+payoff — those are the talk.
+
+Two things already work in your favour: the demo slide is **static** (no load,
+no run, no recovery-from-failure), and everything from Hackathon onward is
+**cut** from the deck.
 
 ## Demo: deliberately not live
 
@@ -257,8 +266,8 @@ The URL's there — it runs on your laptop, so please do try it."
 "Four parts. A WCO join algorithm, done columnar. Then how the WCO
 *bound* extends to indexes, streaming, and iteration — that's the theorem. Then
 the fun part: columnar WCOJ turns out to be a nice *interface* to relations —
-disjunctions, directional predicates, foreign functions. And I'll close with
-some provocations.
+disjunctions, directional predicates, foreign functions. Then some closing
+thoughts.
 
 **Part two is the load-bearing one.**"
 

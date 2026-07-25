@@ -3,7 +3,7 @@ marp: true
 theme: default
 paginate: false
 title: Worst-Case Optimal Datalog (++)
-author: Frank McSherry
+author: Frank McSherry (presented by Moritz Hoffmann)
 ---
 
 <style>
@@ -104,12 +104,15 @@ The same query in *native* PostgreSQL: *still running.*
     - Directional predicates
     - FFI / Extensibility
 
-4.  Comments, provocations, and future directions.
+4.  Closing thoughts.
 
 <!--
 * Can delete (1.) but: other algorithms don't talk about data structures, because the worst-case optimality doesn't come from the data structures.
 * (2) restates Ammar, delta joins.
 * (3, 4) is the extensibility, potential for cutting.
+* Item 4 used to read "Comments, provocations, and future directions" - the provocations and
+  future-directions slides (Conversation starters, DDIR) are cut for the 15-min slot, so don't
+  promise them. Provocations are coffee material now.
 -->
 
 ---
@@ -344,7 +347,9 @@ Languages that have supported this for years:
 Maybe new here: **the WCOJ count protocol as the mechanism**.
 <!--
 Generous to prior art. The "marriage of relational programming with WCOJ throughput"
-is the framing that lands here. Hemann is in the room.
+is the framing that lands here.
+MINNOWBROOK-ERA NOTE: the original said "Hemann is in the room" - that was that audience.
+Check whether any kanren / Mercury / CLP people are actually at FDM26 before nodding to them.
 -->
 
 
