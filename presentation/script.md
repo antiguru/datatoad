@@ -116,6 +116,95 @@ Open by crediting Frank plainly — it's his deck and his framework, you're
 carrying it to this room. Say it once, on slide 1, and move on. It buys
 goodwill and it's true.
 
+## Positioning: you are the systems person, and that is a strength
+
+You're a systems engineer presenting theory-adjacent work to a room of database
+theorists — several of whom derive these bounds for a living (see **Audience
+intel** below). The failure mode is bluffing fluency you don't have; two
+questions deep, it shows, and it costs you the room.
+
+**The fix is one honest sentence, delivered early, lightly, once.** Not an
+apology — a declaration of what kind of talk this is:
+
+> "One caveat up front: I'm a systems engineer, not a theoretician. Frank built
+> this and derived the bounds; I can speak to how it works, why it's fast, and
+> what it's like to use. For the deep questions about the bounds themselves I'll
+> take names and put you in touch with Frank — and looking at this room, several
+> of you could probably derive them faster than either of us."
+
+Why this works: it's true, it's disarming, it sets expectations *before* anyone
+invests in a question you can't answer, and the self-deprecating close reads as
+confidence rather than weakness. **Say it on slide 1 and never again.** Don't
+re-apologize at each theory slide — that turns one honest framing into a nervous
+tic.
+
+**In Q&A, three tiers:**
+
+1. **Systems / behavioural questions — own them.** How it's implemented, why
+   columnar, what's fast, what it's like to use, what the engine does on real
+   workloads. This is your ground and you're the best person in the room on
+   `datatoad` specifically.
+2. **Theory questions you half-know — answer the part you know, mark the edge.**
+   "The bound as I understand it is X — but whether that's tight under Y I'd be
+   guessing, and I'd rather not guess in this room."
+3. **Deep derivation questions — hand off cleanly and without embarrassment.**
+   "That's a Frank question. Give me your email and I'll connect you — or he's
+   very responsive on GitHub." **This is a completely respectable answer**, and
+   in a room like this it's more respectable than a confident wrong one.
+
+Have a way to actually capture the handoffs — phone note or paper. "I'll connect
+you with Frank" is worth much more if you visibly write down the name.
+
+## Audience intel (FDM26 in-person list)
+
+**Short answer on Mercury/kanren/CLP: there are none.** No logic-programming
+people on the in-person list — no Hemann, no Mercury or Prolog contingent. The
+"Connecting to relational programming" slide is therefore *pure prior-art
+citation*, not a nod to anyone present. Keep it — the intellectual honesty is
+still worth it — but don't play it as though someone in the room owns that
+tradition, and don't expect a knowing laugh.
+
+**The real story is who *is* there.** This is a database-theory room, and it
+contains much of the worst-case-optimal-join and dynamic-query-evaluation
+establishment. Directly relevant:
+
+- **Dan Suciu** (UW) — among the most prominent database theorists working on
+  join bounds and information-theoretic query optimization.
+- **Mahmoud Abo Khamis** (RelationalAI) — WCOJ theory (FAQ, PANDA); co-authors
+  with **Hung Ngo** — the "N" in NPRR. Your slide's lineage claim will be heard
+  by one of the lineage.
+- **Dan Olteanu** (UZH) — **the host**, and the factorized-databases person.
+- **Ahmet Kara** (OTH Regensburg) and **Haozhe Zhang** (UZH) — dynamic query
+  evaluation and incremental view maintenance with Olteanu.
+- **Christoph Koch** (EPFL) — DBToaster; incremental view maintenance.
+- **Altan Birler** (TUM, Umbra) and **Niko Göbel** (RelationalAI) — WCOJ in real
+  systems; likely the most sympathetic to the engineering story.
+- **Gonzalo Navarro** (U. Chile) — compact/succinct data structures; a natural
+  source of questions about the columnar layout.
+
+**The one you must be ready for.** Abo Khamis, Kara, Olteanu and Suciu are
+co-authors on *"Insert-Only versus Insert-Delete in Dynamic Query Evaluation"*
+(2024), and Kara, Ngo, Nikolic, Olteanu and Zhang won ICDT 2019 Best Paper for
+*"Counting Triangles under Updates in Worst-Case Optimal Time."* Read those
+titles against your own talk: **your central theorem is an append-only
+(insert-only) worst-case-optimal bound, and your headline example is triangles
+under updates.** Three or four people in that room have published precisely
+there.
+
+This is opportunity, not danger — they will be the most interested people
+present — but walking in without acknowledging that literature would look
+uninformed, especially with Olteanu hosting. **Name it before they do**, e.g.
+when you land the theorem:
+
+> "This sits right next to the dynamic-query-evaluation and IVM work several of
+> you have done — insert-only versus insert-delete, triangles under updates. I'd
+> genuinely like to know how our bound lines up with yours; that's a
+> conversation I want to have rather than a claim I want to make."
+
+That single sentence converts your biggest exposure into the best conversation
+you'll have all day. It also gives you a legitimate, non-defensive landing spot
+for hard theory questions: *comparing* rather than *defending*.
+
 ## Anticipated Q&A (crisp answers)
 
 - **"Isn't this just Ammar et al.?"** The join maintenance is; the contribution
@@ -137,6 +226,18 @@ goodwill and it's true.
 - **"Is `:plus` sound over infinite domains?"** It's mode-constrained: it only
   *proposes* when enough terms are bound to make the output finite; otherwise it
   only validates. That's exactly what `modes()` encodes.
+- **"How does this relate to IVM / dynamic query evaluation / factorized IVM?"**
+  *(Expect this from Olteanu, Kara, Zhang, Koch, or Abo Khamis — it's their
+  literature.)* Honest answer: the delta-rule machinery is the same shape as
+  higher-order IVM, and the append-only restriction is exactly the insert-only
+  side of the insert-only/insert-delete distinction they've studied. What's
+  different is the target — a whole Datalog fixpoint rather than a single
+  maintained view — and the columnar interface on top. **Do not claim priority
+  or superiority here.** Ask how the bounds compare; you'll learn more than you
+  could assert.
+- **"Is the append-only bound tight? What happens with deletions?"** The bound
+  is stated for append-only derivation, which is what monotone Datalog does. For
+  deletions you're outside the theorem, and that's a Frank question — say so.
 - **"In what sense is this DatalogZ? Which decidable fragment?"** Plain Datalog
   can only shuffle constants it was given, so it always terminates; DatalogZ adds
   integers, can *construct* new values, and in general gives up guaranteed
@@ -161,28 +262,36 @@ goodwill and it's true.
 
 | Segment | Slides | Target |
 |---|---|---|
-| Framing + context + demo + outline | 1–4 | 2:45 |
+| Framing + positioning + context + demo + outline | 1–4 | 3:05 |
 | The WCO join (breadth-first) | 5–6 | 2:30 |
-| Streaming → the theorem | 7–8 | 2:30 |
+| Streaming → theorem + IVM acknowledgement | 7–8 | 2:45 |
 | Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
 | Logic atoms + `:plus` payoff | 14–16 | 2:20 |
 | Sensors example | 17 | 0:45 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:40 |
 | Closing + Thanks | 21–22 | 0:55 |
-| **Total as written** | | **~16:30** |
+| **Total as written** | | **~17:05** |
 
-**So the script as written does not fit.** It's ~1:30 over, and that's before
-questions or any stumble. Two cuts get you home:
+**So the script as written does not fit** — it's ~2:05 over, and that's before
+questions or any stumble. Note that two of those minutes are *deliberate*: the
+systems-engineer framing on slide 1 (+0:20) and the IVM acknowledgement on
+slide 8 (+0:15) both earn their keep in this particular room. Protect them and
+cut elsewhere:
 
 1. **Drop slide 17, the sensors example** (−0:45). It's a second logic-atom
    example and `:plus` already made the point. This is the easy one.
 2. **Compress the interface run, slides 9–13** (−0:50). Those five slides are
    quick beats — the two "what implements" builds are ten seconds each, not
    twenty, and slide 13 can be a single sentence. Take the segment to ~2:15.
+3. **Drop slide 18, relational programming** (−0:40). Newly justified: there are
+   **no Mercury / kanren / CLP people in the room** (see Audience intel), so it's
+   the slide with the least purchase on this audience. The tradeoff is that it's
+   your generosity-to-prior-art beat — if you cut it, keep one spoken sentence
+   ("this tradition goes back to CLP and Mercury") so the credit still lands.
 
-That lands ~14:55. If you need more, (3) collapse the two "Columnar WCO Joins"
-slides into one pass. **Do not cut** the streaming/theorem beat or the `:plus`
-payoff — those are the talk.
+All three lands ~14:50. **Do not cut** the streaming/theorem beat, the `:plus`
+payoff, or the slide-1 positioning — those are the talk. If you need still more,
+collapse the two "Columnar WCO Joins" slides into one pass.
 
 Two things already work in your favour: the demo slide is **static** (no load,
 no run, no recovery-from-failure), and everything from Hackathon onward is
@@ -210,10 +319,18 @@ million-node triangle query live.
 > Bracketed `[…]` are stage directions, not spoken. Bold **beats** are the
 > lines to land cleanly even if you improvise around them.
 
-### Slide 1 — *Worst-Case Optimal Datalog (++)*  ·  ~0:45
+### Slide 1 — *Worst-Case Optimal Datalog (++)*  ·  ~1:05
 
 "Thanks. This is work by Frank McSherry — his framework, `datatoad` — and I'm
 presenting it here.
+
+**One caveat up front: I'm a systems engineer, not a theoretician.** Frank built
+this and derived the bounds. I can speak to how it works, why it's fast, and
+what it's like to use — for the deep questions about the bounds themselves I'll
+take names and connect you with Frank. Looking around this room, I suspect
+several of you could derive them faster than either of us.
+
+[Say this once. Do not re-apologize at each theory slide.]
 
 The claim in the title is stronger than it looks. It's easy to hear
 'worst-case optimal' and think 'oh, the join algorithm.' **The point is that the
@@ -327,7 +444,7 @@ semantics, not to count the same delta twice."
 
 [advance]
 
-### Slide 8 — Streaming WCO Joins (2/2) → the theorem  ·  ~1:15
+### Slide 8 — Streaming WCO Joins (2/2) → the theorem  ·  ~1:30
 
 "And here's the payoff.
 
@@ -343,7 +460,14 @@ its final size.**
 
 That's the sentence from the title. It's a reframing of Ammar — 'streaming WCO
 joins' becomes 'WCO Datalog' — but the reframing is the point: you get an
-end-to-end bound, for free, that the joins alone never gave you."
+end-to-end bound, for free, that the joins alone never gave you.
+
+[**Acknowledge the adjacent literature here — several of its authors are in the
+room. See "Audience intel" in Part 1.**] And I should say: this sits right next
+to the dynamic-query-evaluation and incremental-view-maintenance work several of
+you have done — insert-only versus insert-delete, triangles under updates. I'd
+genuinely like to know how our bound lines up with yours. That's a conversation
+I want to have, more than a claim I want to make."
 
 [advance]
 

@@ -348,8 +348,11 @@ Maybe new here: **the WCOJ count protocol as the mechanism**.
 <!--
 Generous to prior art. The "marriage of relational programming with WCOJ throughput"
 is the framing that lands here.
-MINNOWBROOK-ERA NOTE: the original said "Hemann is in the room" - that was that audience.
-Check whether any kanren / Mercury / CLP people are actually at FDM26 before nodding to them.
+AUDIENCE CHECK DONE: there are NO Mercury / kanren / CLP / logic-programming people on the
+FDM26 in-person list. (The original Minnowbrook note said "Hemann is in the room" - not here.)
+So this slide is pure prior-art citation, not a nod to anyone present. Deliver it as honest
+context, don't fish for recognition, and keep "maybe new here" hedged - Suciu and Abo Khamis
+are in the room and novelty claims are cheap in front of them.
 -->
 
 
