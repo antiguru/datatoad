@@ -76,14 +76,16 @@ arc(x, y) :- :range(1, x, 1000001), :plus(x, 1, y).
 tri(a, b, c) :- arc(a,b), arc(b,c), arc(c,a).
 ```
 
-3M facts, natively: **load ~120ms**, **all triangles ~1s**.
-Same query in PostgreSQL: *still running.*
+3M facts, **in your browser**: load ~120ms, all triangles ~1s.
+The same query in *native* PostgreSQL: *still running.*
 
 **▶ Try it:** `frankmcsherry.org/datatoad/demo`
 
 <!--
 * Wasm datatoad: the whole engine compiled to WebAssembly, client-side.
 * SLIDE IS STATIC ON PURPOSE - shared machine, unknown network. Say the numbers, don't run anything.
+* THESE NUMBERS ARE FROM THE BROWSER, single-threaded wasm - not the native build. Don't say "natively".
+  That's the better story anyway: it beats native PostgreSQL from inside a browser tab.
 * No pair-at-a-time order avoids ~1 trillion intermediate results here; PostgreSQL spins up helpers and maxes the CPUs.
 * Backup live-demo slide is at the very end, after Thanks. Only jump to it if the network is known-good AND you have time; the wasm build is single-threaded and freezes the page while it runs.
 -->
