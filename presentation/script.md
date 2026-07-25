@@ -136,6 +136,15 @@ goodwill and it's true.
 - **"Is `:plus` sound over infinite domains?"** It's mode-constrained: it only
   *proposes* when enough terms are bound to make the output finite; otherwise it
   only validates. That's exactly what `modes()` encodes.
+- **"In what sense is this DatalogZ? Which decidable fragment?"** Plain Datalog
+  can only shuffle constants it was given, so it always terminates; DatalogZ adds
+  integers, can *construct* new values, and in general gives up guaranteed
+  termination. Datatoad has the integers — but arrives at them as *relations*
+  (`:plus`, `:times`, `:range`, `:noteq`) rather than as expressions, so they're
+  omni-directional and can *propose* values, not just filter. **Say:** "DatalogZ
+  in spirit; the mode system is what keeps it from running away, not a syntactic
+  restriction." Don't claim a decidable-fragment theorem — there isn't one
+  attached.
 
 ## Don't overclaim (precision caveats)
 
@@ -159,8 +168,10 @@ goodwill and it's true.
 | Relational programming + FFI + benchmarks | 18–20 | 1:30 |
 | Closing | 21 | 0:45 |
 
-Scripted content runs ~15:15 as written — i.e. slightly *over* with zero slack,
-so the cut list below is not optional insurance, it's how you land on time.
+Scripted content runs ~15:15 as written. Two things now buy you slack: the demo
+slide is **static** (no load, no run, no recovery-from-failure), and everything
+from Hackathon onward is **cut**. Budget ~14:30 spoken, leaving room to breathe
+and to overrun a little on the `:plus` reveal.
 
 **If you're running long, cut in this order:** (1) the sensors "more-WCO
 example" (slide 17) — it's a second logic-atom example, fully redundant with
@@ -168,13 +179,20 @@ example" (slide 17) — it's a second logic-atom example, fully redundant with
 "Columnar WCO Joins" slides into one pass. **Do not cut** the streaming/theorem
 beat or the `:plus` payoff — those are the talk.
 
-## Demo risk (read this before the room)
+## Demo: deliberately not live
 
-The WASM build is single-threaded and pauses the page while it runs. **Do not**
-type a big triangle query live and wait 117 s. Either (a) pre-type a *small*
-query and just hit run for a 1–2 s result, or (b) have the page pre-loaded and
-narrate it. Decide beforehand; a hung page mid-talk is the one avoidable
-disaster.
+You're on a **shared machine with an unknown network**, so the demo slide is now
+**static** — the query and its timings are printed on the slide, and the URL is
+there for the audience. Nothing loads, nothing can fail, and it costs no time.
+
+Rationale, if anyone asks why you didn't demo: a live iframe that fails renders
+a blank box mid-talk, and even when it works the WASM build is single-threaded
+and *freezes the page* while it runs.
+
+**A backup live-demo slide sits at the very end, after "Thanks."** Jump to it
+only if (a) the network is known-good — test it before you start — and (b)
+questions are running short. If you do, keep the query *small*; never type the
+million-node triangle query live.
 
 ---
 
@@ -213,20 +231,29 @@ matters if you build systems, less so for the theory, so I'll keep moving.
 
 [advance]
 
-### Slide 3 — Live demo (WASM)  ·  ~0:45
+### Slide 3 — `datatoad`, in the browser (static)  ·  ~0:45
 
-[This is the compiled-to-WebAssembly build, running entirely client-side.]
+[Static slide. Nothing to click, nothing to load. Just talk over it.]
 
-"And it's real and public — this is `datatoad` compiled to WebAssembly, running
-in the browser, no server. [run the pre-loaded small query] You write Datalog,
-it evaluates client-side. You can try this yourselves — the link's in the
-README, and bring your worst query to the hackathon later."
+"And it's a real, public system — the whole engine compiles to WebAssembly and
+runs client-side in a browser.
 
-[Keep this SHORT. Do not run anything slow. Advance the moment the result shows.]
+Here's the example I'd point you at. That graph is built by three rules — note
+`:range` and `:plus` doing the building, we'll come back to those. Then the
+triangle query. **The graph is constructed so that *no* pair-at-a-time join
+order avoids about a trillion intermediate results.**
+
+Natively: a hundred milliseconds to load three million facts, about a second to
+enumerate every triangle. The same query in PostgreSQL was still running when we
+gave up on it.
+
+The URL's there — it runs in your laptop's browser, so please do try it."
+
+[Do NOT open the browser here. The backup live slide is at the very end.]
 
 ### Slide 4 — Talk outline  ·  ~0:30
 
-"Four parts. My favorite WCO join algorithm, done columnar. Then how the WCO
+"Four parts. A WCO join algorithm, done columnar. Then how the WCO
 *bound* extends to indexes, streaming, and iteration — that's the theorem. Then
 the fun part: columnar WCOJ turns out to be a nice *interface* to relations —
 disjunctions, directional predicates, foreign functions. And I'll close with
@@ -463,11 +490,19 @@ So the thing I'd leave you with: columnar WCO Datalog ends up being a
 *substrate*, not just a faster engine. The speed is nice — the compositionality
 is the part I think is worth arguing about. And I'd love to."
 
-[advance → Hackathon / provocations]
+[advance]
+
+### Slide 22 — Thanks / Questions  ·  end
+
+"Thank you — happy to take questions."
+
+[**Stop here.** The next slide is the backup live demo; only go there
+deliberately. See "Demo: deliberately not live" above.]
 
 ---
 
-*End of scripted section. "Hackathon," "Conversation starters," and the DDIR
-language slide are yours to deliver freely — they're provocations, not script.
-The "substrate, not just a faster engine" line is a clean stopping point if you
-want to take questions before those.*
+*Cut for the 15-minute slot: **Hackathon**, **Conversation starters**, and the
+**DDIR language** slide. They're preserved in git history if a longer slot or a
+follow-up session opens up — the conversation-starter provocations (demand
+transform vs. WCOJ, Free Join, factorized DBs) are still good coffee material
+even though they're off the deck.*

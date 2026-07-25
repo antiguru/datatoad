@@ -51,24 +51,44 @@ A { columnar, wco, ~directional, .. } DatalogZ (with integers)
 * concrete implementation
 * properties 1-3 are consequential, 4 is important for system implementors, consider cutting 3, but it is interesting.
   * All the logical predicates also play nice with the framework.
+* DatalogZ defence, say this: "Integers, but arrived at as *relations* rather than expressions - so this is
+  DatalogZ in spirit; the mode system is what keeps it from running away, not a syntactic restriction."
+  Pre-empts "which decidable fragment?" from the theory side.
 -->
 ---
 
-<style scoped>section { padding: 28px; }</style>
+## `datatoad`, in the browser
 
-<iframe src="http://www.frankmcsherry.org/datatoad/demo/" width="1180" height="640"
-        style="border:1px solid #d0d7de; border-radius:8px; display:block; margin:0 auto;"></iframe>
+A graph where *every* pair-at-a-time join plan blows up:
+
+```
+arc(0, x) :- :range(1, x, 1000001).
+arc(x, 0) :- :range(1, x, 1000001).
+arc(x, y) :- :range(1, x, 1000001), :plus(x, 1, y).
+
+tri(a, b, c) :- arc(a,b), arc(b,c), arc(c,a).
+```
+
+| 3M facts, natively | |
+|---|---|
+| load the data | ~100ms |
+| enumerate all triangles | ~1s |
+| *same query, PostgreSQL* | *still running* |
+
+### ▶ Try it: `frankmcsherry.org/datatoad/demo`
 
 <!--
-* Wasm datatoad
-* Public build; runs client-side, no server needed. Fallback if the venue network is flaky: serve the local wasm build and point the iframe at http://localhost:8000/ instead.
+* Wasm datatoad: the whole engine compiled to WebAssembly, client-side.
+* SLIDE IS STATIC ON PURPOSE - shared machine, unknown network. Say the numbers, don't run anything.
+* No pair-at-a-time order avoids ~1 trillion intermediate results here; PostgreSQL spins up helpers and maxes the CPUs.
+* Backup live-demo slide is at the very end, after Thanks. Only jump to it if the network is known-good AND you have time; the wasm build is single-threaded and freezes the page while it runs.
 -->
 
 ---
 
 ## Talk outline
 
-1.  My favorite worst-case optimal join algorithm (columnar).
+1.  A worst-case optimal join algorithm, done columnar.
 
 2.  WCO join bounds (can) extend to indexes, streaming, iteration.
 
@@ -383,77 +403,25 @@ Columnar WCO Datalog ends up being a substrate, not just a faster engine.
 
 ---
 
-## Hackathon
-
-> "Bring your hard query, we'll run it on datatoad / <your system>."
-
-We'll be kicking some tires — please come with your worst.
-
----
-
-## Conversation starters
-
-Things I'd like to argue for over coffee:
-
-1. **Columnar WCOJ is the easiest version of WCOJ to explain.**
-2. **Demand transform fights against worst-case-optimal joins.**
-    WCOJ presuppose materialization; demand presupposes avoiding it.
-3. **Free Join and datatoad converged on similar territory from different sides.**
-    Both interpolate between binary and wco join plans. That's all I know.
-4. **Relational programming + Datalog = a thing?**
-    Kanren / Mercury / CLP traditions meet bottom-up Datalog.
-5. **Factorized DBs narrowly avoided.** Same principles at play; less random access.
-6. **Columnar WCOJ as an interface is worth it.** Compositionality often MIA.
-
----
-
-## Language I'm working with now (DDIR)
-
-<style scoped>
-section { padding: 28px; }
-pre.code { max-height: 656px; overflow: auto; margin: 0; padding: 14px 16px;
-  font-size: 23px; line-height: 1.35; white-space: pre;
-  background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 6px; }
-</style>
-
-<pre class="code">
-let edges = input 0 | key($0[0] ; $0[1]);
-let trans = edges | key($1 ; $0);
-
-outer: {
-    let scc = edges + trim;
-
-    fwd: {
-        let nodes = edges | key($1 ; $1) | enter_at($1[0]);
-        let labels = proposals + nodes | min;
-        var proposals = labels | join(scc, ($2 ; $1));
-    }
-
-    let trim_fwd = edges
-        | join(fwd::labels, ($1 ; $0, $2))
-        | join(fwd::labels, ($0 ; $1, $2))
-        | filter($1[1] == $1[2])
-        | key($0 ; $1[0]);
-
-    bwd: {
-        let nodes = trans | key($1 ; $1) | enter_at($1[0]);
-        let labels = proposals + nodes | min;
-        var proposals = labels | join(trim_fwd, ($2 ; $1));
-    }
-
-    let trim_bwd = trans
-        | join(bwd::labels, ($1 ; $0, $2))
-        | join(bwd::labels, ($0 ; $1, $2))
-        | filter($1[1] == $1[2])
-        | key($0 ; $1[0]);
-
-    var trim = trim_bwd - edges;
-}
-
-result outer::scc | map(;) | arrange | inspect(total);</pre>
-
----
-
 # Thanks
 
 Questions?
+
+<!--
+* Cut for the 15-minute slot: Hackathon, Conversation starters, DDIR language slide.
+  They live in git history (see slides.md before this commit) if a longer slot opens up.
+* BACKUP SLIDE FOLLOWS. Do not advance past this one in the normal flow.
+-->
+
+---
+
+<!-- BACKUP: live demo. Only if the network is known-good and time allows. -->
+
+<style scoped>section { padding: 28px; }</style>
+
+<iframe src="http://www.frankmcsherry.org/datatoad/demo/" width="1180" height="640"
+        style="border:1px solid #d0d7de; border-radius:8px; display:block; margin:0 auto;"></iframe>
+
+<!--
+* Single-threaded wasm; it freezes the page while it runs. Keep any live query SMALL.
+-->
