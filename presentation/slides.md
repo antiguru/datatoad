@@ -104,15 +104,15 @@ The same query in *native* PostgreSQL: *still running.*
     - Directional predicates
     - FFI / Extensibility
 
-4.  Closing thoughts.
-
 <!--
 * Can delete (1.) but: other algorithms don't talk about data structures, because the worst-case optimality doesn't come from the data structures.
 * (2) restates Ammar, delta joins.
-* (3, 4) is the extensibility, potential for cutting.
-* Item 4 used to read "Comments, provocations, and future directions" - the provocations and
-  future-directions slides (Conversation starters, DDIR) are cut for the 15-min slot, so don't
-  promise them. Provocations are coffee material now.
+* (3) is the extensibility, potential for cutting.
+* There used to be a fourth item, "Comments, provocations, and future directions". The
+  provocations and future-directions slides (Conversation starters, DDIR) are cut for the
+  15-min slot, and what remains is a summary, not a fourth part - so the outline says three.
+  The one argument you do want to invite (how the bound compares to IVM / dynamic query
+  evaluation) is already placed on the theorem slide, where it lands first.
 -->
 
 ---

@@ -262,7 +262,7 @@ for hard theory questions: *comparing* rather than *defending*.
 
 | Segment | Slides | Target |
 |---|---|---|
-| Framing + positioning + context + demo + outline | 1–4 | 3:05 |
+| Framing + positioning + context + demo + outline | 1–4 | 3:00 |
 | The WCO join (breadth-first) | 5–6 | 2:30 |
 | Streaming → theorem + IVM acknowledgement | 7–8 | 2:45 |
 | Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
@@ -270,9 +270,9 @@ for hard theory questions: *comparing* rather than *defending*.
 | Sensors example | 17 | 0:45 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:40 |
 | Closing + Thanks | 21–22 | 0:55 |
-| **Total as written** | | **~17:05** |
+| **Total as written** | | **~17:00** |
 
-**So the script as written does not fit** — it's ~2:05 over, and that's before
+**So the script as written does not fit** — it's ~2:00 over, and that's before
 questions or any stumble. Note that two of those minutes are *deliberate*: the
 systems-engineer framing on slide 1 (+0:20) and the IVM acknowledgement on
 slide 8 (+0:15) both earn their keep in this particular room. Protect them and
@@ -378,13 +378,12 @@ The URL's there — it runs on your laptop, so please do try it."
 
 [Do NOT open the browser here. The backup live slide is at the very end.]
 
-### Slide 4 — Talk outline  ·  ~0:30
+### Slide 4 — Talk outline  ·  ~0:25
 
-"Four parts. A WCO join algorithm, done columnar. Then how the WCO
+"Three parts. A WCO join algorithm, done columnar. Then how the WCO
 *bound* extends to indexes, streaming, and iteration — that's the theorem. Then
 the fun part: columnar WCOJ turns out to be a nice *interface* to relations —
-disjunctions, directional predicates, foreign functions. Then some closing
-thoughts.
+disjunctions, directional predicates, foreign functions.
 
 **Part two is the load-bearing one.**"
 
