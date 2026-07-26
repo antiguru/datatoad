@@ -116,7 +116,7 @@ The same query in *native* PostgreSQL: *still running.*
 * (3) is the extensibility, potential for cutting.
 * There used to be a fourth item, "Comments, provocations, and future directions". The
   provocations and future-directions slides (Conversation starters, DDIR) are cut for the
-  15-min slot, and what remains is a summary, not a fourth part - so the outline says three.
+  15:00 target, and what remains is a summary, not a fourth part - so the outline says three.
   The one argument you do want to invite (how the bound compares to IVM / dynamic query
   evaluation) is already placed on the theorem slide, where it lands first.
 -->
@@ -428,7 +428,7 @@ Columnar WCO Datalog ends up being a substrate, not just a faster engine.
 Questions?
 
 <!--
-* Cut for the 15-minute slot: Hackathon, Conversation starters, DDIR language slide.
+* Cut to hit the 15:00 target (20-min slot): Hackathon, Conversation starters, DDIR language slide.
   They live in git history (see slides.md before this commit) if a longer slot opens up.
 * BACKUP SLIDE FOLLOWS. Do not advance past this one in the normal flow.
 -->

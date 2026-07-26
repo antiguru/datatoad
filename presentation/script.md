@@ -1,14 +1,14 @@
 # Speaker script — *Worst-Case Optimal Datalog (++)*
 
-**FDM26 workshop · 15-minute slot · presenter: Moritz Hoffmann**
+**FDM26 workshop · 20-minute slot, targeting ~15:00 · presenter: Moritz Hoffmann**
 **Work by Frank McSherry; presented by Moritz Hoffmann.**
 
 This is *one* delivery of the deck, written to react against — a concrete
 alternative, not the only way. Part 1 is the mental model to have in your head
 before you walk up. Part 2 is a slide-by-slide spoken script covering all 22
 slides, title → "Thanks". Timings assume ~135 words per minute. **As written it
-runs long for a 15-minute slot — see Pacing at the end of Part 1 for what to
-cut.**
+runs ~17:05 — inside the 20-minute slot, ~2:05 over the 15:00 target. See
+Pacing at the end of Part 1 for the optional trims.**
 
 ---
 
@@ -256,9 +256,10 @@ for hard theory questions: *comparing* rather than *defending*.
 - The end-to-end bound is for **append-only** derivation (monotone Datalog);
   don't imply it covers arbitrary negation/aggregation mid-fixpoint.
 
-## Pacing plan (this is the hard part at 15 min)
+## Pacing plan
 
-22 slides is a lot for 15 minutes. Summing the per-slide timings in Part 2:
+The slot is **20 minutes**; the target is **~15:00**, leaving real slack for
+questions and overrun. Summing the per-slide timings in Part 2:
 
 | Segment | Slides | Target |
 |---|---|---|
@@ -267,31 +268,39 @@ for hard theory questions: *comparing* rather than *defending*.
 | Streaming → theorem + IVM acknowledgement | 7–8 | 2:50 |
 | Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
 | Logic atoms + `:plus` payoff | 14–16 | 2:20 |
-| Sensors example | 17 | 0:45 |
+| Sensors example (keep) | 17 | 1:00 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:40 |
 | Closing + Thanks | 21–22 | 0:55 |
-| **Total as written** | | **~16:50** |
+| **Total as written** | | **~17:05** |
 
-**So the script as written does not fit** — it's ~1:50 over, and that's before
-questions or any stumble. Note that two of those minutes are *deliberate*: the
-systems-engineer framing on slide 1 (+0:20) and the IVM acknowledgement on
-slide 8 (+0:15) both earn their keep in this particular room. Protect them and
-cut elsewhere:
+**Everything fits the slot as written** — 17:05 in a 20-minute room leaves
+~3 minutes spare. So nothing here is forced. To reach the 15:00 target and bank
+5 minutes for questions, two trims are enough:
 
-1. **Drop slide 17, the sensors example** (−0:45). It's a second logic-atom
-   example and `:plus` already made the point. This is the easy one.
+1. **Drop slide 18, relational programming** (−0:40). Best value for money:
+   there are **no Mercury / kanren / CLP people in the room** (see Audience
+   intel), so it has the least purchase on this audience. The tradeoff is that
+   it's your generosity-to-prior-art beat — if you cut the slide, keep one spoken
+   sentence ("this tradition goes back to CLP and Mercury") so the credit lands.
 2. **Compress the interface run, slides 9–13** (−0:50). Those five slides are
    quick beats — the two "what implements" builds are ten seconds each, not
    twenty, and slide 13 can be a single sentence. Take the segment to ~2:15.
-3. **Drop slide 18, relational programming** (−0:40). Newly justified: there are
-   **no Mercury / kanren / CLP people in the room** (see Audience intel), so it's
-   the slide with the least purchase on this audience. The tradeoff is that it's
-   your generosity-to-prior-art beat — if you cut it, keep one spoken sentence
-   ("this tradition goes back to CLP and Mercury") so the credit still lands.
 
-All three lands ~14:50. **Do not cut** the streaming/theorem beat, the `:plus`
-payoff, or the slide-1 positioning — those are the talk. If you need still more,
-collapse the two "Columnar WCO Joins" slides into one pass.
+That lands **~15:35**, near enough to target. If you want to be strictly under,
+collapse the two "Columnar WCO Joins" slides into one pass (−0:45) → ~14:50.
+
+**Do not cut:**
+
+- The **streaming/theorem** beat and the **`:plus`** payoff — those are the talk.
+- The **slide-1 positioning** and the **IVM acknowledgement** on slide 8. They
+  cost ~0:35 between them and are the two highest-value additions for *this*
+  room specifically.
+- **Slide 17, the sensors example.** An earlier draft of this plan had it as the
+  first cut, calling it redundant with `:plus`. That was wrong. `:plus` shows a
+  logic atom cutting work; the sensors example shows the cheapest proposer
+  *flipping per tuple* under skew — which is what worst-case optimality is
+  actually for, and exactly what the WCOJ theorists present think about. See the
+  slide-17 script for the numbers; it may be your second-strongest slide here.
 
 Two things already work in your favour: the demo slide is **static** (no load,
 no run, no recovery-from-failure), and everything from Hackathon onward is
@@ -570,14 +579,33 @@ that couldn't sum. An omni-directional logic atom didn't just filter — it
 
 [advance]
 
-### Slide 17 — A more-WCO example (sensors)  ·  ~0:45  · *CUT IF LONG*
+### Slide 17 — A more-WCO example (sensors)  ·  ~1:00  · **KEEP**
 
-"Quick second example if we have a moment — sensors with readings, a few noisy,
-most not; queries with per-sensor ranges, narrow for the noisy ones. The
-interesting bit is the last rule: intersecting a query range with the readings
-via `:range`, where again the logic atom carries the range *into* the join
-rather than testing after. Same mechanism as `:plus`. [If short on time: 'I'll
-skip the details — it's the same trick as `:plus`.']"
+"Same trick as `:plus`, but sharper — and this one is really about skew.
+
+A few sensors are noisy: those have *every* reading, but we only ask a narrow
+window of them. Most sensors are quiet: one reading each, but we ask a wide
+window. Note the inversion — the big data has the small query, and the small
+data has the big query.
+
+So who should propose the reading? For a noisy sensor, the *range* is the cheap
+way in: 256 candidates instead of 65,000. For a quiet sensor, the *data* is
+cheap: one reading, where the range would hand you 65,000. **The cheapest
+proposer flips per sensor — and the count protocol re-decides it for every one
+of them.**
+
+That's the point: there's no good static plan here. Always filtering by range
+after the fact costs you about 130×. Always proposing from the range costs you
+about 30,000×. Only deciding per tuple gets you the output size."
+
+[**The numbers, if pushed.** Noisy: 256 sensors × 65,536 readings = 16.8M facts,
+queried over [0,256). Quiet: 65,280 sensors × 1 reading, queried over [0,65536).
+Output = 130,816. Proposals: adaptive 130,816 (= output); always-`data`
+16,842,496 (~129×); always-`:range` 4,278,255,616 (~32,700×).]
+
+[Why this earns its slot in *this* room: it demonstrates per-tuple plan
+adaptivity under skew, which is what worst-case optimality is for. `:plus` shows
+a logic atom cutting work; only this slide shows the proposer *changing*.]
 
 [advance]
 
@@ -643,7 +671,7 @@ deliberately. See "Demo: deliberately not live" above.]
 
 ---
 
-*Cut for the 15-minute slot: **Hackathon**, **Conversation starters**, and the
+*Cut for the 15:00 target: **Hackathon**, **Conversation starters**, and the
 **DDIR language** slide. They're preserved in git history if a longer slot or a
 follow-up session opens up — the conversation-starter provocations (demand
 transform vs. WCOJ, Free Join, factorized DBs) are still good coffee material
