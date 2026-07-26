@@ -262,17 +262,17 @@ for hard theory questions: *comparing* rather than *defending*.
 
 | Segment | Slides | Target |
 |---|---|---|
-| Framing + positioning + context + demo + outline | 1–4 | 3:00 |
+| Framing + positioning + context + demo + outline | 1–4 | 2:45 |
 | The WCO join (breadth-first) | 5–6 | 2:30 |
-| Streaming → theorem + IVM acknowledgement | 7–8 | 2:45 |
+| Streaming → theorem + IVM acknowledgement | 7–8 | 2:50 |
 | Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
 | Logic atoms + `:plus` payoff | 14–16 | 2:20 |
 | Sensors example | 17 | 0:45 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:40 |
 | Closing + Thanks | 21–22 | 0:55 |
-| **Total as written** | | **~17:00** |
+| **Total as written** | | **~16:50** |
 
-**So the script as written does not fit** — it's ~2:00 over, and that's before
+**So the script as written does not fit** — it's ~1:50 over, and that's before
 questions or any stumble. Note that two of those minutes are *deliberate*: the
 systems-engineer framing on slide 1 (+0:20) and the IVM acknowledgement on
 slide 8 (+0:15) both earn their keep in this particular room. Protect them and
@@ -319,7 +319,7 @@ million-node triangle query live.
 > Bracketed `[…]` are stage directions, not spoken. Bold **beats** are the
 > lines to land cleanly even if you improvise around them.
 
-### Slide 1 — *Worst-Case Optimal Datalog (++)*  ·  ~1:05
+### Slide 1 — *Worst-Case Optimal Datalog (++)*  ·  ~0:50
 
 "Thanks. This is work by Frank McSherry — his framework, `datatoad` — and I'm
 presenting it here.
@@ -332,15 +332,17 @@ several of you could derive them faster than either of us.
 
 [Say this once. Do not re-apologize at each theory slide.]
 
-The claim in the title is stronger than it looks. It's easy to hear
-'worst-case optimal' and think 'oh, the join algorithm.' **The point is that the
-*whole* Datalog computation — the full, semi-naive fixpoint — comes with a
-worst-case-optimal bound. And you would not get that from the joins alone.**
+One sentence on why the title is worth your next fifteen minutes. It's easy to
+hear 'worst-case optimal' and think: the join algorithm. **The claim here is
+bigger — the *whole* Datalog computation, the full semi-naive fixpoint, comes
+with a worst-case-optimal bound.**
 
-WCO joins on their own don't compose — if you just fire one off per rule, per
-iteration, the costs don't add up to anything optimal. The way out is a
-reinterpretation of existing work — Ammar and colleagues' streaming joins — and
-that reframing is really what this talk is about."
+Why that's hard, and where it comes from, is the middle of the talk."
+
+[**State the claim, withhold the mechanism.** Do *not* explain non-composition
+or name Ammar here — both are payoffs with their own slides (7 and 8), and
+spending them now defuses those slides and buys nothing: the audience can't
+evaluate "doesn't compose" before they've seen the delta sum on screen.]
 
 [advance]
 
@@ -423,7 +425,7 @@ back half of the talk is about who else can implement it."
 
 [advance]
 
-### Slide 7 — Streaming WCO Joins (1/2)  ·  ~1:15
+### Slide 7 — Streaming WCO Joins (1/2)  ·  ~1:20
 
 "Now the twist. In Datalog, the input atoms don't sit still — they *change*.
 Every iteration derives new facts, so each body atom gets a delta: `dBody0`,
@@ -434,12 +436,19 @@ compute just the change to the head. And that's this telescoped sum: `dBody0`
 against everyone else updated, plus `dBody1` against everyone else, and so on —
 one term per body atom.
 
-**The trap:** if you run each of those lines as an independent WCO join, each is
-a tiny delta joined against big full relations, and WCOJ happily lets you touch
-all of the big side. Do that every iteration and the costs don't telescope to
-anything good. The fix is to make each a *seeded* join against maintained
-indexes, with a constrained term order — and to be careful, with multiset
-semantics, not to count the same delta twice."
+**And here's the trap — this is the thing I said was hard.** If you run each of
+those lines as an independent WCO join, each one is a tiny delta joined against
+big full relations, and WCOJ happily gives you permission to touch all of the
+big side. Do that every iteration and the costs don't telescope to anything
+good. **This is what people mean when they say worst-case optimal joins don't
+compose: optimal per join does not add up to optimal overall.**
+
+The fix is to make each a *seeded* join against maintained indexes, with a
+constrained term order — and to be careful, with multiset semantics, not to
+count the same delta twice."
+
+[This is where non-composition lands, with the sum visible above it. Don't
+pre-empt it on slide 1.]
 
 [advance]
 

@@ -35,6 +35,12 @@ Work by Frank McSherry; presented by Moritz Hoffmann.
 * In the end, the whole computation, full, semi-naive, comes with worst-case optimal bounds. You wouldn't get them from joins alone.
 * WCOJ alone doesn't compose, don't do 1x1M repeatedly
 * Reinterpretation of existing work (Ammar et al), taking streaming computation for datalog
+*
+* DISTRIBUTION: those last two bullets are Frank's, and they are NOT for this slide any more -
+* saying them here front-loads the talk and spends the payoffs early. Where they land now:
+*   - "doesn't compose" -> slide 7, where the delta sum is on screen and the argument is visible.
+*   - Ammar et al.      -> slide 2 in passing, then properly on slide 8 with the theorem.
+* Here: credit Frank, the systems-engineer caveat, and the claim. Then stop.
 -->
 ---
 
