@@ -1,7 +1,7 @@
 ---
 marp: true
 theme: default
-paginate: false
+paginate: true
 title: Worst-Case Optimal Datalog (++)
 author: Frank McSherry (presented by Moritz Hoffmann)
 ---
@@ -15,6 +15,8 @@ section:has(> h2:first-child) {
   justify-content: flex-start;
 }
 </style>
+
+<!-- _paginate: false -->
 
 # Worst-Case Optimal Datalog (++)
 
