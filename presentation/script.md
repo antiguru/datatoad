@@ -7,7 +7,7 @@ This is *one* delivery of the deck, written to react against — a concrete
 alternative, not the only way. Part 1 is the mental model to have in your head
 before you walk up. Part 2 is a slide-by-slide spoken script covering all 22
 slides, title → "Thanks". Timings assume ~135 words per minute. **As written it
-runs ~17:05 — inside the 20-minute slot, ~2:05 over the 15:00 target. See
+runs ~17:10 — inside the 20-minute slot, ~2:10 over the 15:00 target. See
 Pacing at the end of Part 1 for the optional trims.**
 
 ---
@@ -266,14 +266,14 @@ questions and overrun. Summing the per-slide timings in Part 2:
 | Framing + positioning + context + demo + outline | 1–4 | 2:45 |
 | The WCO join (breadth-first) | 5–6 | 2:30 |
 | Streaming → theorem + IVM acknowledgement | 7–8 | 2:50 |
-| Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:05 |
+| Interface: ExecAtom → antijoin → PlanAtom | 9–13 | 3:10 |
 | Logic atoms + `:plus` payoff | 14–16 | 2:20 |
 | Sensors example (keep) | 17 | 1:00 |
 | Relational programming + FFI + benchmarks | 18–20 | 1:40 |
 | Closing + Thanks | 21–22 | 0:55 |
-| **Total as written** | | **~17:05** |
+| **Total as written** | | **~17:10** |
 
-**Everything fits the slot as written** — 17:05 in a 20-minute room leaves
+**Everything fits the slot as written** — 17:10 in a 20-minute room leaves
 ~3 minutes spare. So nothing here is forced. To reach the 15:00 target and bank
 5 minutes for questions, two trims are enough:
 
@@ -286,8 +286,8 @@ questions and overrun. Summing the per-slide timings in Part 2:
    quick beats — the two "what implements" builds are ten seconds each, not
    twenty, and slide 13 can be a single sentence. Take the segment to ~2:15.
 
-That lands **~15:35**, near enough to target. If you want to be strictly under,
-collapse the two "Columnar WCO Joins" slides into one pass (−0:45) → ~14:50.
+That lands **~15:40**, near enough to target. If you want to be strictly under,
+collapse the two "Columnar WCO Joins" slides into one pass (−0:45) → ~14:55.
 
 **Do not cut:**
 
@@ -488,15 +488,26 @@ I want to have, more than a claim I want to make."
 
 [advance]
 
-### Slide 9 — Columnar WCO Joins: An API  ·  ~0:45
+### Slide 9 — Columnar WCO Joins: An API  ·  ~0:50
 
 "Second half. Having gone all-in on columnar, the join machinery has a small
 interface. A type that can participate in a WCO join implements `ExecAtom`: give
 me your `facts` — recent or all; `count` how many extensions you offer for each
 fact; and `join` — extend or semijoin the facts by a new term.
 
-**That's it. `facts`, `count`, `join`. Those are the three verbs from before, as
-a trait.** So the natural question is: who implements this?"
+**Three verbs, two methods** — and that's the interesting part. Extend and
+validate turn out to be *the same operation*: `join` introducing a new term, or
+`join` introducing none, which is just a semijoin. And `facts` isn't one of the
+three at all — it's the way in, and 'recent or all' is the semi-naive
+distinction: the delta, or everything.
+
+So the natural question is: who implements this?"
+
+[**Expect this to be noticed.** Someone will ask why the three verbs became
+these three names. The answer above is the honest one, and it sets up slide 11:
+an antijoin is exactly the atom whose `added` is *always* empty — join-shaped,
+but only ever a validator. Note also that the slide simplifies the real trait,
+which additionally has `terms()` and calls `facts` `seed`.]
 
 [advance]
 

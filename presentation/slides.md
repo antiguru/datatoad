@@ -224,6 +224,18 @@ pub trait ExecAtom<T> {
 }
 ```
 
+<!--
+* MAPPING, in case someone asks why the verbs changed names. Three verbs, two methods:
+*   count    -> count
+*   extend   -> join with `added` non-empty
+*   validate -> join with `added` empty (a semijoin)
+*   facts    -> not a verb at all; the way in. `recent` vs all IS the semi-naive delta/full split.
+* Extend and validate being one method is the point, not an accident: it is why an antijoin
+  fits (slide 11) - it is the atom whose `added` is always empty. src/rules/atoms/anti.rs
+  literally asserts that.
+* This slide simplifies: the real trait also has `terms()`, and `facts` is called `seed`.
+-->
+
 ---
 
 ## What implements `ExecAtom`?
